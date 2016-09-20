@@ -18,6 +18,10 @@ where:
 
 
 ## Algorithms 
+1. If `L(f)` is easy to calculate, we use the following algorithm:
+![FISTA with constant step](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_L.png)
+where `pL(y)` is defined as:
+![pL(y)](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/ply.png)
 
-![FISTA with constant step](/figs/FISTA_L.png)
+<!-- ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_noL.png) -->
 
