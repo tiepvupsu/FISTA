@@ -10,5 +10,5 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     x = arg min F(x) = f(x) + lambda g(x)
 
 where: 
-    * `g: R^n -> R`: a continuous convex function which is possibly *nonsmooth*. 
-    * `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continously differentiable with Lipschitz continuous gradient `L(f)`:
+    - `g: R^n -> R`: a continuous convex function which is possibly *nonsmooth*. 
+    - `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continously differentiable with Lipschitz continuous gradient `L(f)`:
