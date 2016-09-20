@@ -8,7 +8,7 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
 
 ## General Optimization problem    
 
-`x = arg min F(x) = f(x) + lambda g(x)`
+`x = arg min F(x) = f(x) + lambda g(x)`                      (1)
 
 where: 
 
@@ -23,5 +23,10 @@ where:
 where `pL(y)` is defined as:
 ![pL(y)](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/ply.png)
 
-<!-- ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_noL.png) -->
+For a new problem, our job is to implement two functions: `grad_f(x)` and `pL(y)` which are often simpler than the original optimization stated in (1).
+
+2. In case `L(f)` is hard to find, we can alternatively use the following algorithm: (in this version, I haven't implemented this):
+![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_noL.png)
+where `QL(x, y)` is defined as:
+![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/qlxy.png)
 
