@@ -19,5 +19,5 @@ where:
 
 ## Algorithms 
 
-![FISTA with constant step](/figs/FISTA_L.png =200)
+![FISTA with constant step](/figs/FISTA_L.png)
 
