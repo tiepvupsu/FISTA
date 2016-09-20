@@ -7,8 +7,17 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
 
 
 ## General Optimization problem    
+
 `x = arg min F(x) = f(x) + lambda g(x)`
 
 where: 
-* `g: R^n -> R`: a continuous convex function which is possibly nonsmooth. 
-* `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continously differentiable with Lipschitz continuous gradient `L(f)`:
+
+- `g: R^n -> R`: a continuous convex function which is possibly _nonsmooth_. 
++ `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continously differentiable with Lipschitz continuous gradient `L(f)`:
+`||grad_f(x) - grad_f(y)|| <= L(f)||x - y||` for every `x, y \in R^n`
+
+
+## Algorithms 
+
+![FISTA with constant step](/figs/FISTA_L.png)
+
