@@ -88,8 +88,10 @@ where:
 
 ***Optimization problem:***
     <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
+
 ***Syntax:***
         `X = lasso_fista(Y, D, Xinit, opts)`
+        
 ***Example:***
 ```matlab 
 function test_lasso()
@@ -122,6 +124,7 @@ function test_lasso()
     fprintf('cost_spams = %.5s\n', cost_spams);
 end
 ```
+
 ***Output:***
 ```
 cost_fista = 8.39552e+00
