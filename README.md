@@ -1,5 +1,5 @@
 
-# FISTA
+# [FISTA](https://github.com/tiepvupsu/FISTA)
 **FISTA implementation in MATLAB based on the paper:**
 
 A. Beck and M. Teboulle,  "A fast iterative shrinkage-thresholding algo-
@@ -87,12 +87,15 @@ where:
 ### Lasso l1 minimization
 
 ***Optimization problem:***
+
     <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
 
 ***Syntax:***
+
         `X = lasso_fista(Y, D, Xinit, opts)`
         
 ***Example:***
+
 ```matlab 
 function test_lasso()
     clc
