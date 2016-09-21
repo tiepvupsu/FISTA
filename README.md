@@ -55,6 +55,7 @@ where `QL(x, y)` is defined as:
 
 ## Usage
 `[X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F) `
+See [`fista_general`](https://github.com/tiepvupsu/FISTA/blob/master/fista_general.m).
 where:
 ```matlab
     INPUT:
