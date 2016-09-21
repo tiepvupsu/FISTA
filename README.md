@@ -20,12 +20,6 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [Elastic net problems](#elastic-net-problems)
     - [Row sparsity problems](#row-sparsity-problems)
     - [Group sparsity problems](#group-sparsity-problems)
-- [Some typical `f\(x\)` functions](#some-typical-fx-functions)
-- [Some typical `g\(x\)` functions](#some-typical-gx-functions)
-    - [norm 1 \(LASSO\)](#norm-1-lasso)
-    - [norm 2](#norm-2)
-    - [row sparsity](#row-sparsity)
-    - [group sparsity](#group-sparsity)
 
 <!-- /MarkdownTOC -->
 
@@ -140,7 +134,7 @@ end
         
 ***Example:***
 
-1. L1 minimization (`lambda` is a scalar)
+**1. L1 minimization** (`lambda` is a scalar)
 
 [`test_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
 
@@ -184,7 +178,7 @@ cost_fista = 8.39552e+00
 cost_spams = 8.39552e+00
 ```
 
-2. Weighted l1 minimization (`lambda` is a vector or a matrix)
+**2. Weighted l1 minimization** (`lambda` is a vector or a matrix)
 
 [`test_lasso_weighted`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso_weighted.m)
 
@@ -235,7 +229,7 @@ cost_fista = 1.23149e+01
 cost_spams = 1.23149e+01
 ```
 
-3. Fulltest 
+**3. Fulltest**
 
 Run [`fista_lasso_fulltest`](https://github.com/tiepvupsu/FISTA/blob/master/demo/fulltest_fista_lasso.m) to see the full test.
 
@@ -289,6 +283,8 @@ if `lambda` is a matrix. In case `lambda` is a vector, it will be convert to a m
 
 ***MATLAB function:***
 
+[`fista_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_enet.m)
+
 ```matlab
 function X = fista_enet(Y, D, Xinit, opts)
     opts    = initOpts(opts);
@@ -331,42 +327,51 @@ function X = fista_enet(Y, D, Xinit, opts)
 end 
 ```
 
+***Example:***
+
+[`test_enet`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_enet.m)
+
+```matlab
+function test_enet()
+    clc
+    d      = 30;    % data dimension
+    N      = 70;    % number of samples 
+    k      = 50;    % dictionary size 
+    lambda = 0.01;
+    lambda2 = 0.001;
+    Y      = normc(rand(d, N));
+    D      = normc(rand(d, k));
+    %% cost function 
+    function c = calc_F(X)
+        c = 0.5*normF2(Y - D*X) + lambda2/2*normF2(X) + lambda*norm1(X);
+    end
+    %% fista solution 
+    opts.pos = true;
+    opts.lambda = lambda;
+    opts.lambda2 = lambda2;
+    opts.check_grad = 0;
+    X_fista = fista_enet(Y, D, [], opts);
+    %% spams solution 
+    param.lambda     = lambda;
+    param.lambda2    = lambda2;
+    param.numThreads = 1;
+    param.mode       = 2;
+    param.pos        = opts.pos;
+    X_spams      = mexLasso(Y, D, param); 
+    %% compare costs 
+    cost_spams = calc_F(X_spams);
+    cost_fista = calc_F(X_fista);
+    fprintf('cost_fista = %.5s\n', cost_fista);
+    fprintf('cost_spams = %.5s\n', cost_spams);    
+end
+```
+Run this function will generate output like this:
+
+```
+cost_fista = 6.10309e+00
+cost_spams = 6.10309e+00
+```
+
 ### Row sparsity problems 
 
 ### Group sparsity problems
-
-
-## Some typical `f(x)` functions
-
-1. `f(x) = 0.5*||y - Dx||_F^2` 
-If we let `DtD = D'*D, Dty = D'*y`, then we have:
-    + `grad_f(x) = DtD*x - Dty`
-    + `L(f) = max(eig(DtD))`
-
-2. `f(x) = 0.5*x'*A*x + b'*x`
-where `A` is a positive semidefinite, then: 
-    + `grad_f(x) = A*x + b`
-    + `L(f) = max(eig(A))`
-
-## Some typical `g(x)` functions
-
-### norm 1 (LASSO)
-`g(x) = ||x||_1`
-The corresponding `pL(x)` function would be like this:
-`X = arg min_X 0.5||X - U||_F^2 + lambda||X||_1`
-and can be broken down into: 
-`x = arg min_x 0.5 (x - u)^2 + lambda x` (2)
-Solution to this problem can be found at `proj/proj_l1.m`.
-
-**Note**: the implemented function can work with weighted-LASSO problem and nonegative constraint as well. 
-#### Usage 
-
-
-
-### norm 2 
-`g(x) = ||x||_2`
-
-### row sparsity 
-`X` is a matrix with many zero rows. 
-`g(X) = sum ||X^i||_2` where `X^i` is the i-th row of `X`.
-### group sparsity 
