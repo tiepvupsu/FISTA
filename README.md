@@ -233,11 +233,11 @@ cost_fista = 1.23149e+01
 cost_spams = 1.23149e+01
 ```
 
-**3. Fulltest**
+**3. Full test**
 
 Run [`fista_lasso_fulltest`](https://github.com/tiepvupsu/FISTA/blob/master/demo/fulltest_fista_lasso.m) to see the full test.
 
-Results should like this:
+Results should look like this:
 
 ```
 A toy example:
