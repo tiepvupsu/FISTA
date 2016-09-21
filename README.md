@@ -88,7 +88,40 @@ where:
 
 **Optimization problem**:
     <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
-
+**Syntax**:
+        `X = lasso_fista(Y, D, [], opts)`
+**Example:**
+```matlab 
+function test_lasso()
+    clc
+    d      = 300;   % data dimension
+    N      = 70;    % number of samples 
+    k      = 100;   % dictionary size 
+    lambda = 0.01;
+    Y      = normc(rand(d, N));
+    D      = normc(rand(d, k));
+    %% cost function 
+    function c = calc_F(X)
+        c = 0.5*normF2(Y - D*X) + lambda*norm1(X);
+    end
+    %% fista solution 
+    opts.pos = true;
+    opts.lambda = lambda;
+    X_fista = lasso_fista(Y, D, [], opts);
+    %% spams solution 
+    param.lambda     = lambda;
+    param.lambda2    = 0;
+    param.numThreads = 1;
+    param.mode       = 2;
+    param.pos        = opts.pos;
+    X_spams      = mexLasso(Y, D, param); 
+    %% compare costs 
+    cost_spams = calc_F(X_spams);
+    cost_fista = calc_F(X_fista);
+    fprintf('cost_fista = %.5s\n', cost_fista);
+    fprintf('cost_spams = %.5s\n', cost_spams);
+end
+```
 ## Some typical `f(x)` functions
 
 1. `f(x) = 0.5*||y - Dx||_F^2` 
