@@ -16,7 +16,7 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [Function fista_lasso \(and weighted\)](#function-fistalasso-and-weighted)
+    - [Function fista_lasso](#function-fistalasso)
     - [Function fista_elastic](#function-fistaelastic)
     - [Function fista_row_sparsity](#function-fistarowsparsity)
     - [Function fista_group_sparsity](#function-fistagroupsparsity)
@@ -87,7 +87,7 @@ where:
 
 ## Examples
 
-### Function fista_lasso (and weighted)
+### Function fista_lasso
 
 ***Optimization problem:***
 This function solves the l1 Lasso problem: 
@@ -141,7 +141,7 @@ end
 ***Example:***
 
 1. L1 minimization (`lambda` is a scalar)
-
+[test_lasso.m](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
 ```
 function test_lasso()
     clc
