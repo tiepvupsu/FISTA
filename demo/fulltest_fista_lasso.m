@@ -1,4 +1,4 @@
-function X = fista_lasso_fulltest()
+function X = fulltest_fista_lasso()
     clc;        
     addpath(fullfile('build'));
     addpath('proj');

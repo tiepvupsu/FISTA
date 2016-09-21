@@ -1,19 +1,19 @@
 function test_lasso_weighted()
 	clc
 	d      = 30; 	% data dimension
-	N      = 7; 	% number of samples 
+	N      = 70; 	% number of samples 
 	k      = 50; 	% dictionary size 
 	lambda = 0.01;
 	Y      = normc(rand(d, N));
 	D      = normc(rand(d, k));
-	lambda = rand(k, 1);
+	lambda = rand(k, N);
     if size(lambda, 2) == 1
         lambda = repmat(lambda, 1, N);
     end
     %% fista solution 
 	opts.pos = true;
 	opts.lambda = lambda;
-    opts.check_grad = 1;
+    opts.check_grad = 0;
 	X_fista = fista_lasso(Y, D, [], opts);
 	%% spams solution 
 	param.lambda     = 1; 
