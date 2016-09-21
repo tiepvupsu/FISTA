@@ -1,0 +1,41 @@
+function test_lasso()
+d      = 300; % data dimension
+N      = 70; % number of samples 
+k      = 100; % dictionary size 
+lambda = 0.01;
+Y      = normc(rand(d, N));
+D      = normc(rand(d, k));
+
+    function c = calc_F(X)
+        c = 0.5*normF2(Y - D*X) + lambda*norm1(X);
+    end
+opts.pos = true;
+
+opts.lambda = lambda;
+% tic 
+X_fista = lasso_fista(Y, D, [], opts);
+% t1 = toc 
+param.lambda     = lambda; 
+param.lambda2    = 0;
+param.numThreads = 1; 
+param.mode       = 2; 
+% mex solution and optimal value 
+param.pos = opts.pos;
+
+% tic 
+X_spams      = mexLasso(Y, D, param); 
+% t2 = toc 
+
+% fprintf('1. average(norm1(X_fista - X_spams)) = %5f\n', ...
+% norm1(X_fista - X_spams)/numel(X_fista));
+costmex = calc_F(X_spams);
+costfista = calc_F(X_fista);
+fprintf('2. costfista - cost_spams           = %5f\n', ...
+costfista - costmex);  
+costfist
+% if costfista < costmex
+% fprintf('FISTA has better cost.\n');
+% else 
+% fprintf('SPAMS has better cost.\n');
+% end 
+end

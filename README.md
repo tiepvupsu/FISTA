@@ -14,6 +14,9 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
 - [Algorithms](#algorithms)
     - [If `L\(f\)` is easy to calculate,](#if-lf-is-easy-to-calculate)
     - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
+- [Usage](#usage)
+- [Examples](#examples)
+    - [Lasso l1 minimization](#lasso-l1-minimization)
 - [Some typical `f\(x\)` functions](#some-typical-fx-functions)
 - [Some typical `g\(x\)` functions](#some-typical-gx-functions)
     - [norm 1 \(LASSO\)](#norm-1-lasso)
@@ -51,6 +54,40 @@ We can alternatively use the following algorithm: (in this version, I haven't im
 ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_noL.png)
 where `QL(x, y)` is defined as:
 ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/qlxy.png)
+
+## Usage
+`[X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F) `
+where:
+```matlab
+    INPUT:
+        grad   : a function calculating gradient of f(X) given X.
+        proj   : a function calculating pL(x) -- projection
+        Xinit  : initial guess.
+        L      : the Lipschitz constant of the gradient of f(X).
+        opts   : a _struct variable describing the algorithm.
+            opts.lambda  : a regularization parameter, can be either a scalar or
+                            a weighted matrix.
+            opts.max_iter: maximum iterations of the algorithm. 
+                            Default 300.
+            opts.tol     : a tolerance, the algorithm will stop if difference 
+                            between two successive X is smaller than this value. 
+                            Default 1e-8.
+            opts.verbose : showing F(X) after each iteration or not. 
+                            Default false. 
+        calc_F: optional, a function calculating value of F at X 
+                via feval(calc_F, X). 
+   OUTPUT:
+       X        : solution
+       iter     : number of run iterations
+       min_cost : the achieved cost
+```
+
+## Examples
+
+### Lasso l1 minimization
+
+**Optimization problem**:
+    <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
 
 ## Some typical `f(x)` functions
 
