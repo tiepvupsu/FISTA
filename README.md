@@ -75,6 +75,10 @@ and can be broken down into:
 Solution to this problem can be found at `proj/proj_l1.m`.
 
 **Note**: the implemented function can work with weighted-LASSO problem and nonegative constraint as well. 
+#### Usage 
+
+
+
 ### norm 2 
 `g(x) = ||x||_2`
 

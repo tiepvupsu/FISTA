@@ -1,5 +1,5 @@
-function X = proj_l1(U, lambda, opts)
-% function X = proj_l1(U, lambda, opts)
+function X = proj_l1(U, opts)
+% function X = proj_l1(U, opts)
 % Description:
 %   Soft Thresoding function. Solve one of the following problems:
 %       U is a matrix of size d x k 
@@ -32,6 +32,7 @@ function X = proj_l1(U, lambda, opts)
         opts.pos = false;
     end 
     %%
+    lambda = opts.lambda;
     if numel(lambda) > 1 && size(lambda, 2) == 1 % column vector 
         lambda = repmat(lambda, 1, size(U, 2));
     end 
