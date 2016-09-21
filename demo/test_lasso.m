@@ -13,7 +13,7 @@ function test_lasso()
     %% fista solution 
 	opts.pos = true;
 	opts.lambda = lambda;
-	X_fista = lasso_fista(Y, D, [], opts);
+	X_fista = fista_lasso(Y, D, [], opts);
 	%% spams solution 
 	param.lambda     = lambda;
 	param.lambda2    = 0;

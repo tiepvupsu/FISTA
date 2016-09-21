@@ -61,7 +61,8 @@ function [X, iter, min_cost] = fista_general(grad,proj, Xinit, L, opts, calc_F)
     iter = 0;
     cost_old = 1e10;
     %% MAIN LOOP
-    opts_proj.pos = opts.pos;
+    
+    opts_proj = opts;
     opts_proj.lambda = lambdaLiv;
     while  iter < opts.max_iter
         iter = iter + 1;
