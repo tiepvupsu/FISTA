@@ -1,6 +1,6 @@
 
-# [FISTA](https://github.com/tiepvupsu/FISTA)
-**FISTA implementation in MATLAB based on the paper:**
+# A simple implementation of [FISTA](https://github.com/tiepvupsu/FISTA)
+**A MATLAB FISTA implementation based on the paper:**
 
 A. Beck and M. Teboulle,  "A fast iterative shrinkage-thresholding algo-
 rithm for linear inverse problems", *SIAM Journal on Imaging Sciences*,
@@ -19,7 +19,7 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [Lasso \(and weighted\) problems](#lasso-and-weighted-problems)
     - [Elastic net problems](#elastic-net-problems)
     - [Row sparsity problems](#row-sparsity-problems)
-    - [Group sparsity problems](#group-sparsity-problems)
+    - [Group sparsity problems \(implement later\)](#group-sparsity-problems-implement-later)
 
 <!-- /MarkdownTOC -->
 
@@ -59,9 +59,9 @@ where:
     INPUT:
         grad   : a function calculating gradient of f(X) given X.
         proj   : a function calculating pL(x) -- projection
-        Xinit  : initial guess.
-        L      : the Lipschitz constant of the gradient of f(X).
-        opts   : a _struct variable describing the algorithm.
+        Xinit  : a matrix -- initial guess.
+        L      : a scalar the Lipschitz constant of the gradient of f(X).
+        opts   : a struct
             opts.lambda  : a regularization parameter, can be either a scalar or
                             a weighted matrix.
             opts.max_iter: maximum iterations of the algorithm. 
@@ -374,4 +374,73 @@ cost_spams = 6.10309e+00
 
 ### Row sparsity problems 
 
-### Group sparsity problems
+***Optimization problem:***
+
+<img src = "http://latex2png.com/output//latex_f25ff740bc227534143b7c7efef43b49.png" height = "40"/>
+
+where <img src = "http://latex2png.com/output//latex_6b9baa6c1f09b542199ed99c45d6da4d.png" height = "30"/> and <img src = "http://latex2png.com/output//latex_050fcc38fdcb3c62285268f77c598e6e.png" height = "20"/> is the i-th row of <img src = "http://latex2png.com/output//latex_de7e0eb6f543e908b83f967ed5a61759.png" height = "20"/>.
+
+***Matlab function:***
+
+```matlab
+function X = fista_row_sparsity(Y, D, Xinit, opts)
+    opts = initOpts(opts);
+    lambda = opts.lambda;
+
+    if numel(lambda) > 1 && size(lambda, 2)  == 1
+        lambda = repmat(opts.lambda, 1, size(Y, 2));
+    end
+    if numel(Xinit) == 0
+        Xinit = zeros(size(D,2), size(Y,2));
+    end
+    %% cost f
+    function cost = calc_f(X)
+        cost = 1/2 *normF2(Y - D*X);
+    end 
+    %% cost function 
+    function cost = calc_F(X)
+        cost = calc_f(X) + lambda*norm12(X);
+    end 
+    %% gradient
+    DtD = D'*D;
+    DtY = D'*Y;
+    function res = grad(X) 
+        res = DtD*X - DtY;
+    end 
+    %% Checking gradient 
+    if opts.check_grad
+        check_grad(@calc_f, @grad, Xinit);
+    end 
+    %% Lipschitz constant 
+    L = max(eig(DtD));
+    %% Use fista 
+    opts.max_iter = 500;
+    [X, ~, ~] = fista_general(@grad, @proj_l12, Xinit, L, opts, @calc_F);   
+```
+
+***Example:***
+
+```matlab
+function test_row_sparsity()
+    clc
+    d      = 30;    % data dimension
+    N      = 70;    % number of samples 
+    k      = 50;    % dictionary size 
+    lambda = 0.01;
+    Y      = normc(rand(d, N));
+    D      = normc(rand(d, k));
+    %% cost function 
+    function c = calc_F(X)
+        c = 0.5*normF2(Y - D*X) + lambda*norm12(X);
+    end
+    %% fista solution 
+    opts.pos = true;
+    opts.lambda = lambda;
+    opts.check_grad = 0;
+    X_fista = fista_row_sparsity(Y, D, [], opts);
+    cost_fista = calc_F(X_fista);
+    fprintf('cost_fista = %.5s\n', cost_fista);
+end
+```
+
+### Group sparsity problems (implement later)
