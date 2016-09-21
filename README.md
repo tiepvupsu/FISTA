@@ -16,7 +16,7 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [Lasso l1 minimization](#lasso-l1-minimization)
+    - [1. Lasso l1 minimization](#1-lasso-l1-minimization)
 - [Some typical `f\(x\)` functions](#some-typical-fx-functions)
 - [Some typical `g\(x\)` functions](#some-typical-gx-functions)
     - [norm 1 \(LASSO\)](#norm-1-lasso)
@@ -84,14 +84,14 @@ where:
 
 ## Examples
 
-### Lasso l1 minimization
+### 1. Lasso l1 minimization
 
 ***Optimization problem:***
     <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
 
 ***Syntax:***
         `X = lasso_fista(Y, D, Xinit, opts)`
-        
+
 ***Example:***
 ```matlab 
 function test_lasso()
