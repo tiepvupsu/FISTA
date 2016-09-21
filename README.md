@@ -16,10 +16,10 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [Function fista_lasso](#function-fistalasso)
-    - [Function fista_elastic](#function-fistaelastic)
-    - [Function fista_row_sparsity](#function-fistarowsparsity)
-    - [Function fista_group_sparsity](#function-fistagroupsparsity)
+    - [Lasso \(and weighted\) problems](#lasso-and-weighted-problems)
+    - [Elastic net problems](#elastic-net-problems)
+    - [Row sparsity problems](#row-sparsity-problems)
+    - [Group sparsity problems](#group-sparsity-problems)
 - [Some typical `f\(x\)` functions](#some-typical-fx-functions)
 - [Some typical `g\(x\)` functions](#some-typical-gx-functions)
     - [norm 1 \(LASSO\)](#norm-1-lasso)
@@ -87,7 +87,7 @@ where:
 
 ## Examples
 
-### Function fista_lasso
+### Lasso (and weighted) problems
 
 ***Optimization problem:***
 This function solves the l1 Lasso problem: 
@@ -141,7 +141,9 @@ end
 ***Example:***
 
 1. L1 minimization (`lambda` is a scalar)
-[test_lasso.m](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
+
+[`test_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
+
 ```
 function test_lasso()
     clc
@@ -183,6 +185,8 @@ cost_spams = 8.39552e+00
 ```
 
 2. Weighted l1 minimization (`lambda` is a vector or a matrix)
+
+[`test_lasso_weighted`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso_weighted.m)
 
 ```matlab
 function test_lasso_weighted()
@@ -233,7 +237,7 @@ cost_spams = 1.23149e+01
 
 3. Fulltest 
 
-Run `fista_lasso_fulltest` to see the full test.
+Run [`fista_lasso_fulltest`](https://github.com/tiepvupsu/FISTA/blob/master/demo/fulltest_fista_lasso.m) to see the full test.
 
 Results should like this:
 
@@ -269,11 +273,11 @@ FISTA provides a better cost.
 ```
 
 
-### Function fista_elastic
+### Elastic net problems 
 
-### Function fista_row_sparsity
+### Row sparsity problems 
 
-### Function fista_group_sparsity
+### Group sparsity problems
 
 
 ## Some typical `f(x)` functions
