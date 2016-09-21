@@ -41,7 +41,7 @@ where:
 ### If `L(f)` is easy to calculate,
 We use the following algorithm:
 ![FISTA with constant step](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_L.png)
-where `pL(y)` is a proximal function as defined as:
+where `pL(y)` is a proximal function defined as:
 ![pL(y)](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/ply.png)
 
 For a new problem, our job is to implement two functions: `grad_f(x)` and `pL(y)` which are often simpler than the original optimization stated in (1).
