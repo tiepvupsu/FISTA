@@ -16,7 +16,10 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
     - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
 - [Usage](#usage)
 - [Examples](#examples)
-    - [Lasso l1 minimization](#lasso-l1-minimization)
+    - [Function fista_lasso \(and weighted\)](#function-fistalasso-and-weighted)
+    - [Function fista_elastic](#function-fistaelastic)
+    - [Function fista_row_sparsity](#function-fistarowsparsity)
+    - [Function fista_group_sparsity](#function-fistagroupsparsity)
 - [Some typical `f\(x\)` functions](#some-typical-fx-functions)
 - [Some typical `g\(x\)` functions](#some-typical-gx-functions)
     - [norm 1 \(LASSO\)](#norm-1-lasso)
@@ -84,19 +87,61 @@ where:
 
 ## Examples
 
-### Lasso l1 minimization
+### Function fista_lasso (and weighted)
 
 ***Optimization problem:***
+This function solves the l1 Lasso problem: 
 
-    <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40"/> 
+<img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40"/> 
 
-***Syntax:***
-sdfgdg
-        `X = lasso_fista(Y, D, Xinit, opts)`
+if `lambda` is a scalar, or :
+
+<img src = "http://latex2png.com/output//latex_b2c39ff78d0b93333256be334698a3aa.png" height = "40"/>
+
+if `lambda` is a matrix. In case `lambda` is a vector, it will be convert to a matrix with same columns and its # of columns = # of columns of `X`.
+
+***MATLAB function:***
+
+```matlab
+function X = lasso_fista(Y, D, Xinit, opts)
+    opts = initOpts(opts);
+    lambda = opts.lambda;
+    if numel(Xinit) == 0
+        Xinit = zeros(size(D,2), size(Y,2));
+    end
+    %% cost f
+    function cost = calc_f(X)
+        cost = 1/2 *normF2(Y - D*X);
+    end 
+    %% cost function 
+    function cost = calc_F(X)
+        if numel(lambda) == 1 % scalar 
+            cost = calc_f(X) + lambda*norm1(X);
+        elseif numel(lambda) == numel(X)
+            cost = calc_f(X) + norm1(lambda.*X);
+        end
+    end 
+    %% gradient
+    DtD = D'*D;
+    DtY = D'*Y;
+    function res = grad(X) 
+        res = DtD*X - DtY;
+    end 
+    %% Checking gradient 
+    if nargin == 0 && opts.check_grad
+        check_grad(@calc_f, @grad, Xinit);
+    end 
+    %% Lipschitz constant 
+    L = max(eig(DtD));
+    %% Use fista 
+    [X, ~, ~] = fista_general(@grad, @proj_l1, Xinit, L, opts, @calc_F);
+end 
+```
         
 ***Example:***
+1. L1 minimization (`lambda` is a scalar)
 
-```matlab 
+```
 function test_lasso()
     clc
     d      = 300;   % data dimension
@@ -110,16 +155,16 @@ function test_lasso()
         c = 0.5*normF2(Y - D*X) + lambda*norm1(X);
     end
     %% fista solution 
-    opts.pos = true;
+    opts.pos    = true;   % change to false for unconstrained problems
     opts.lambda = lambda;
-    X_fista = lasso_fista(Y, D, [], opts);
+    X_fista     = lasso_fista(Y, D, [], opts);
     %% spams solution 
     param.lambda     = lambda;
     param.lambda2    = 0;
     param.numThreads = 1;
     param.mode       = 2;
     param.pos        = opts.pos;
-    X_spams      = mexLasso(Y, D, param); 
+    X_spams          = mexLasso(Y, D, param);
     %% compare costs 
     cost_spams = calc_F(X_spams);
     cost_fista = calc_F(X_fista);
@@ -128,11 +173,60 @@ function test_lasso()
 end
 ```
 
-***Output:***
+
+will generate an output like this:
+
 ```
 cost_fista = 8.39552e+00
 cost_spams = 8.39552e+00
 ```
+
+2. Weighted l1 minimization (`lambda` is a vector or a matrix)
+
+3. Fulltest 
+
+Run `fista_lasso_fulltest` to see the full test.
+
+Results should like this:
+
+```
+A toy example:
+Data dimension                : 300
+No. of samples                : 70
+No. of atoms in the dictionary: 100
+=====================================================
+Lasso FISTA solution vs SPAMS solution,
+ both of the following values should be close to 0.
+1. average(norm1(X_fista - X_spams)) = 0.000028
+2. costfista - cost_spams            = 0.000003
+SPAMS provides a better cost.
+=====================================================
+Lasso Weighted FISTA solution vs SPAMS solution,
+ both of the following values should be close to 0.
+1. average(norm1(X_fista - X_spams)) = 0.000015
+2. costfista - cost_spams            = -0.000004
+FISTA provides a better cost.
+================Positive Constraint===================
+Lasso FISTA solution vs SPAMS solution,
+ both of the following values should be close to 0.
+1. average(norm1(X_fista - X_spams)) = 0.000025
+2. costfista - cost_spams            = 0.003537
+SPAMS provides a better cost.
+================Positive Constraint===================
+Lasso Weighted FISTA solution vs SPAMS solution,
+ both of the following values should be close to 0.
+1. average(norm1(X_fista - X_spams)) = 0.000016
+2. costfista - cost_spams            = -0.000005
+FISTA provides a better cost.
+```
+
+
+### Function fista_elastic
+
+### Function fista_row_sparsity
+
+### Function fista_group_sparsity
+
 
 ## Some typical `f(x)` functions
 
