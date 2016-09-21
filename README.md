@@ -86,11 +86,11 @@ where:
 
 ### Lasso l1 minimization
 
-**Optimization problem**:
+***Optimization problem:***
     <img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40" align = "middle"/> 
-**Syntax**:
-        `X = lasso_fista(Y, D, [], opts)`
-**Example:**
+***Syntax:***
+        `X = lasso_fista(Y, D, Xinit, opts)`
+***Example:***
 ```matlab 
 function test_lasso()
     clc
@@ -122,6 +122,12 @@ function test_lasso()
     fprintf('cost_spams = %.5s\n', cost_spams);
 end
 ```
+***Output:***
+```
+cost_fista = 8.39552e+00
+cost_spams = 8.39552e+00
+```
+
 ## Some typical `f(x)` functions
 
 1. `f(x) = 0.5*||y - Dx||_F^2` 
