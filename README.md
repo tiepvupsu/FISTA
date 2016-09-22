@@ -2,11 +2,12 @@
 # A simple implementation of [FISTA](https://github.com/tiepvupsu/FISTA)
 **A MATLAB FISTA implementation based on the paper:**
 
-A. Beck and M. Teboulle,  "A fast iterative shrinkage-thresholding algo-
-rithm for linear inverse problems", *SIAM Journal on Imaging Sciences*,
+A. Beck and M. Teboulle,  "A fast iterative shrinkage-thresholding algorithm for linear inverse problems", *SIAM Journal on Imaging Sciences*,
 vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.fr/Cedric.Herzet/Cedric.Herzet/Sparse_Seminar/Entrees/2012/11/12_A_Fast_Iterative_Shrinkage-Thresholding_Algorithmfor_Linear_Inverse_Problems_(A._Beck,_M._Teboulle)_files/Breck_2009.pdf).
 
 **[Tiep Vu](http://www.personal.psu.edu/thv102/), Penn State, Sep 2016**
+
+If you find any issue, please let me know via [this](https://github.com/tiepvupsu/FISTA/issues). I would really appreciate. Thank you.
 
 ***Note:*** Results in this repo are compared with those obtained by the [*SPAMS*](http://spams-devel.gforge.inria.fr/) toolbox. 
 # Table of content
