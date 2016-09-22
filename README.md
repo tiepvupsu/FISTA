@@ -8,7 +8,7 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
 
 **[Tiep Vu](http://www.personal.psu.edu/thv102/), Penn State, Sep 2016**
 
-***Note:*** Results in this repo are compared with those obtained by [*SPAMS*](http://spams-devel.gforge.inria.fr/) toolbox. 
+***Note:*** Results in this repo are compared with those obtained by the [*SPAMS*](http://spams-devel.gforge.inria.fr/) toolbox. 
 # Table of content
 
 <!-- MarkdownTOC -->
@@ -98,7 +98,7 @@ if `lambda` is a scalar, or :
 
 <img src = "http://latex2png.com/output//latex_b2c39ff78d0b93333256be334698a3aa.png" height = "40"/>
 
-if `lambda` is a matrix. In case `lambda` is a vector, it will be convert to a matrix with same columns and its # of columns = # of columns of `X`.
+if `lambda` is a matrix. In case `lambda` is a vector, it will be converted to a matrix with same columns and its # of columns = # of columns of `X`.
 
 ***MATLAB function:***
 

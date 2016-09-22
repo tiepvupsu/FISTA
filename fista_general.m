@@ -1,4 +1,4 @@
-function [X, iter, min_cost] = fista_general(grad,proj, Xinit, L, opts, calc_F)   
+function [X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F)   
 % function [X, iter, min_cost] = fista_general(grad,proj, Xinit, L, opts, calc_F)   
 % * A Fast Iterative Shrinkage-Thresholding Algorithm for 
 % Linear Inverse Problems.
@@ -7,26 +7,27 @@ function [X, iter, min_cost] = fista_general(grad,proj, Xinit, L, opts, calc_F)
 %   - f(X): a smooth convex function with continuously differentiable 
 %       with Lipschitz continuous gradient `L(f)` (Lipschitz constant of 
 %       the gradient of `f`).
-%   INPUT:
-%     grad   : a _function_ calculating gradient of `f(X)` given `X`.
-%     Xinit  : initial guess.
-%     L      : the Lipschitz constant of the gradient of `f(X)`.
-%     lambda : a regularization parameter, can be either a scalar or
-%               a weighted matrix.
-%     opts   : a _struct variable describing the algorithm.
-%       opts.max_iter: maximum iterations of the algorithm. 
-%                       Default `300`.
-%       opts.tol     : a tolerance, the algorithm will stop if difference 
-%           between two successive X is smaller than this value. 
-%           Default `1e-8`.
-%       opts.verbose: showing F(X) after each iteration or not. 
-%           Default false. 
-%     calc_F: optional, a _function_ calculating value of F at X 
-%       via `feval(calc_F, X)`. 
-%   OUTPUT:
-%       X: solution
-%       iter: number of run iterations 
-%       min_cost: the achieved cost 
+%  INPUT:
+%       grad   : a function calculating gradient of f(X) given X.
+%       proj   : a function calculating pL(x) -- projection
+%       Xinit  : a matrix -- initial guess.
+%       L      : a scalar the Lipschitz constant of the gradient of f(X).
+%       opts   : a struct
+%           opts.lambda  : a regularization parameter, can be either a scalar or
+%                           a weighted matrix.
+%           opts.max_iter: maximum iterations of the algorithm. 
+%                           Default 300.
+%           opts.tol     : a tolerance, the algorithm will stop if difference 
+%                           between two successive X is smaller than this value. 
+%                           Default 1e-8.
+%           opts.verbose : showing F(X) after each iteration or not. 
+%                           Default false. 
+%       calc_F: optional, a function calculating value of F at X 
+%               via feval(calc_F, X). 
+%  OUTPUT:
+%      X        : solution
+%      iter     : number of run iterations
+%      min_cost : the achieved cost
 % Modifications:
 % 06/17/2016: set default value for opts.pos = false
 % -------------------------------------
