@@ -35,9 +35,10 @@ If you find any issue, please let me know via [this](https://github.com/tiepvups
 where: 
 
 - `g: R^n -> R`: a continuous convex function which is possibly _nonsmooth_. 
-+ `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continously differentiable with Lipschitz continuous gradient `L(f)`:
++ `f: R^n -> R`: a smooth convex function of the type `C^{1, 1}`, i.e., continuously differentiable with Lipschitz continuous gradient `L(f)`:
 `||grad_f(x) - grad_f(y)|| <= L(f)||x - y||` for every `x, y \in R^n`
 
+***Note***: this implementation also work on nonnegativity constrained problems.
 
 ## Algorithms
 
