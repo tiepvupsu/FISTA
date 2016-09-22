@@ -60,7 +60,7 @@ where `QL(x, y)` is defined as:
 ## Usage
 `[X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F) `
 
-See [`fista_general`](https://github.com/tiepvupsu/FISTA/blob/master/fista_general.m).
+See [`fista_general.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_general.m).
 
 where:
 ```matlab
@@ -144,7 +144,7 @@ end
 
 **1. L1 minimization** (`lambda` is a scalar)
 
-[`test_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
+See [`test_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
 
 ```matlab
 function test_lasso()
@@ -188,7 +188,7 @@ cost_spams = 8.39552e+00
 
 **2. Weighted l1 minimization** (`lambda` is a vector or a matrix)
 
-[`test_lasso_weighted`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso_weighted.m)
+See [`test_lasso_weighted.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso_weighted.m)
 
 ```matlab
 function test_lasso_weighted()
@@ -239,7 +239,7 @@ cost_spams = 1.23149e+01
 
 **3. Full test**
 
-Run [`fista_lasso_fulltest`](https://github.com/tiepvupsu/FISTA/blob/master/demo/fulltest_fista_lasso.m) to see the full test.
+Run [`fista_lasso_fulltest.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/fulltest_fista_lasso.m) to see the full test.
 
 Results should look like this:
 
@@ -291,7 +291,7 @@ if `lambda` is a matrix. In case `lambda` is a vector, it will be convert to a m
 
 ***MATLAB function:***
 
-[`fista_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_enet.m)
+See [`fista_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_enet.m)
 
 ```matlab
 function X = fista_enet(Y, D, Xinit, opts)
@@ -337,7 +337,7 @@ end
 
 ***Example:***
 
-[`test_enet`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_enet.m)
+See [`test_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_enet.m)
 
 ```matlab
 function test_enet()
