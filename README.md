@@ -393,9 +393,9 @@ cost_spams = 6.10309e+00
 
 ***Optimization problem:***
 
-<img src = "latex/fista_row_sparsity0.png" height = "40"/>
+<img src = "latex/fista_row_sparsity0.png" height = "50"/>
 
-where 'm' is number of rows and <img src = "latex/fista_row_sparsity1.png" height = "20"/> is the i-th row of <img src = "latex/fista_row_sparsity2.png" height = "20"/>.
+where 'm' is number of rows and <img src = "latex/fista_row_sparsity1.png" height = "15"/> is the i-th row of <img src = "latex/fista_row_sparsity2.png" height = "150"/>.
 
 ***Matlab function:***
 
