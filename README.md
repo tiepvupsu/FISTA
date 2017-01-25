@@ -28,9 +28,10 @@ If you find any issue, please let me know via [this](https://github.com/tiepvups
 <!-- /MarkdownTOC -->
 
 
+<a name="general-optimization-problem"></a>
 ## General Optimization problem
 
-<img src = "http://latex2png.com/output//latex_c23fbf77c146fecf816d0bfca373a6b6.png" height = "30"/>                
+<img src = "latex/fista1.png" height = "30"/>                
 
 where: 
 
@@ -40,8 +41,10 @@ where:
 
 ***Note***: this implementation also work on nonnegativity constrained problems.
 
+<a name="algorithms"></a>
 ## Algorithms
 
+<a name="if-lf-is-easy-to-calculate"></a>
 ### If `L(f)` is easy to calculate,
 We use the following algorithm:
 ![FISTA with constant step](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_L.png)
@@ -50,6 +53,7 @@ where `pL(y)` is a proximal function defined as:
 
 For a new problem, our job is to implement two functions: `grad_f(x)` and `pL(y)` which are often simpler than the original optimization stated in (1).
 
+<a name="in-case-lf-is-hard-to-find"></a>
 ### In case `L(f)` is hard to find,
 We can alternatively use the following algorithm: (in this version, I haven't implemented this):
 
@@ -57,6 +61,7 @@ We can alternatively use the following algorithm: (in this version, I haven't im
 where `QL(x, y)` is defined as:
 ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/qlxy.png)
 
+<a name="usage"></a>
 ## Usage
 `[X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F) `
 
@@ -87,18 +92,20 @@ where:
        min_cost : the achieved cost
 ```
 
+<a name="examples"></a>
 ## Examples
 
+<a name="lasso-and-weighted-problems"></a>
 ### Lasso (and weighted) problems
 
 ***Optimization problem:***
 This function solves the l1 Lasso problem: 
 
-<img src = "http://latex2png.com/output//latex_39b2181c13ba4baad074f1c6bc483012.png" height = "40"/> 
+<img src = "latex/fista_lasso1.png" height = "40"/> 
 
 if `lambda` is a scalar, or :
 
-<img src = "http://latex2png.com/output//latex_b2c39ff78d0b93333256be334698a3aa.png" height = "40"/>
+<img src = "latex/fista_lasso2.png" height = "40"/>
 
 if `lambda` is a matrix. In case `lambda` is a vector, it will be converted to a matrix with same columns and its # of columns = # of columns of `X`.
 
@@ -275,17 +282,18 @@ FISTA provides a better cost.
 ```
 
 
+<a name="elastic-net-problems"></a>
 ### Elastic net problems 
 
 
 ***Optimization problem:***
 This function solves the [Elastic Net](https://web.stanford.edu/~hastie/Papers/B67.2%20(2005)%20301-320%20Zou%20&%20Hastie.pdf) problem: 
 
-<img src = "http://latex2png.com/output//latex_1df681660bd22abe5cb3058dd52107e9.png" height = "40"/> 
+<img src = "latex/fista_elastic.png" height = "40"/> 
 
 if `lambda` is a scalar, or :
 
-<img src = "http://latex2png.com/output//latex_5e73be67e95d3ccefa3e715061e18f1c.png" height = "40"/>
+<img src = "latex/fista_elastic2.png" height = "40"/>
 
 if `lambda` is a matrix. In case `lambda` is a vector, it will be convert to a matrix with same columns and its # of columns = # of columns of `X`.
 
@@ -380,13 +388,14 @@ cost_fista = 6.10309e+00
 cost_spams = 6.10309e+00
 ```
 
+<a name="row-sparsity-problems"></a>
 ### Row sparsity problems 
 
 ***Optimization problem:***
 
-<img src = "http://latex2png.com/output//latex_f25ff740bc227534143b7c7efef43b49.png" height = "40"/>
+<img src = "latex/fista_row_sparsity0.png" height = "40"/>
 
-where <img src = "http://latex2png.com/output//latex_6b9baa6c1f09b542199ed99c45d6da4d.png" height = "30"/> and <img src = "http://latex2png.com/output//latex_050fcc38fdcb3c62285268f77c598e6e.png" height = "20"/> is the i-th row of <img src = "http://latex2png.com/output//latex_de7e0eb6f543e908b83f967ed5a61759.png" height = "20"/>.
+where 'm' is number of rows and <img src = "latex/fista_row_sparsity1.png" height = "20"/> is the i-th row of <img src = "latex/fista_row_sparsity2.png" height = "20"/>.
 
 ***Matlab function:***
 
@@ -451,4 +460,5 @@ function test_row_sparsity()
 end
 ```
 
+<a name="group-sparsity-problems-implement-later"></a>
 ### Group sparsity problems (implement later)

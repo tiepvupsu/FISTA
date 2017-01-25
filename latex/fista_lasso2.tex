@@ -1,0 +1,15 @@
+\documentclass{standalone}
+\usepackage{tikz,pgfplots,calc}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{arrows}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+\usepackage{amsmath}
+\input{definitions}
+
+\begin{document}
+$ \displaystyle
+\bX = \arg\min_{\bX} \frac{1}{2} \|\bY - \bD \bX\|_F^2 + \|\Lambda \odot\bX\|_1 ~~ (\odot~ \text{is the element-wise product})
+$
+
+\end{document}
