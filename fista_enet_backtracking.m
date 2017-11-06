@@ -1,4 +1,4 @@
-function X = fista_enet(Y, D, Xinit, opts)
+function X = fista_enet_backtracking(Y, D, Xinit, opts)
 
 
     if ~isfield(opts, 'backtracking')
@@ -17,7 +17,7 @@ function X = fista_enet(Y, D, Xinit, opts)
     end
     %% cost f
     function cost = calc_f(X)
-        cost = 1/2 *normF2(Y - D*X) + lambda2/2*normF2(X);
+        cost = 1/2 *normF2(Y(:, i) - D*X) + lambda2/2*normF2(X);
     end 
     %% cost function 
     function cost = calc_F(X)
@@ -31,18 +31,15 @@ function X = fista_enet(Y, D, Xinit, opts)
     DtD = D'*D + lambda2*eye(size(D, 2));
     DtY = D'*Y;
     function res = grad(X) 
-        res = DtD*X - DtY;
+        res = DtD*X - DtY(:, i);
     end 
     %% Checking gradient 
     if opts.check_grad
         check_grad(@calc_f, @grad, Xinit);
     end 
     opts.max_iter = 500;    
-    if ~opts.backtracking 
-        %% Lipschitz constant 
-        L = max(eig(DtD));
-        [X, ~, ~] = fista_general(@grad, @proj_l1, Xinit, L, opts, @calc_F);
-    else 
-        [X, ~, ~] = fista_backtracking(@calc_f, @grad, @proj_l1, Xinit, opts,  @calc_F);
+    X = zeros(size(Xinit));
+    for i = 1:size(X, 2)
+        X(:, i) = fista_backtracking(@calc_f, @grad, Xinit(:, i), opts, @calc_F);
     end 
 end 

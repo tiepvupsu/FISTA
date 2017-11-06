@@ -1,4 +1,9 @@
 function X = fista_lasso_backtracking(Y, D, Xinit, opts)
+
+    if ~isfield(opts, 'backtracking')
+        opts.backtracking = false;
+    end 
+
     opts = initOpts(opts);
     lambda = opts.lambda;
 
@@ -10,7 +15,7 @@ function X = fista_lasso_backtracking(Y, D, Xinit, opts)
     end
     %% cost f
     function cost = calc_f(X)
-        cost = 1/2 *normF2(Y - D*X);
+        cost = 1/2 *normF2(Y(:, i) - D*X);
     end 
     %% cost function 
     function cost = calc_F(X)
@@ -23,16 +28,20 @@ function X = fista_lasso_backtracking(Y, D, Xinit, opts)
     %% gradient
     DtD = D'*D;
     DtY = D'*Y;
+    
     function res = grad(X) 
-        res = DtD*X - DtY;
+        res = DtD*X - DtY(:, i);
     end 
-    %% Checking gradient 
+    % Checking gradient 
     if opts.check_grad
         check_grad(@calc_f, @grad, Xinit);
     end 
-    %% Lipschitz constant 
-    % L = max(eig(DtD));
-    %% Use fista 
-    opts.max_iter = 500;    
-    [X, ~, ~] = fista_backtracking(@calc_f, @grad, @proj_l1, Xinit, opts, @calc_F);
+
+    opts.max_iter = 500;
+    % for backtracking, we need to optimize one by one 
+    X = zeros(size(Xinit));
+    for i = 1:size(X, 2) 
+       X(:, i) = fista_backtracking(@calc_f, @grad, Xinit(:, i), opts, ...
+                                        @calc_F);
+    end 
 end 

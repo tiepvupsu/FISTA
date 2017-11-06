@@ -1,4 +1,4 @@
-function [X, iter, min_cost] = fista_backtracking(cal_f, grad, proj, Xinit, opts, calc_F)   
+function X = fista_backtracking(cal_f, grad, Xinit, opts, calc_F)   
 % function [X, iter, min_cost] = fista_backtracking(func, grad, proj, Xinit, L, opts, calc_F)   
 % * A Fast Iterative Shrinkage-Thresholding Algorithm for 
 % Linear Inverse Problems.
@@ -64,11 +64,27 @@ function [X, iter, min_cost] = fista_backtracking(cal_f, grad, proj, Xinit, opts
         opts.eta = 2;
     end 
 
+    %% projection 
+    function res = projection(U, opts) 
+        switch opts.regul
+            case 'l1'
+                res = proj_l1(U, opts);
+            case 'l2' 
+                res = proj_l2(U, opts);
+            case 'l12'
+                res = proj_l12(U, opts);
+        end
+    end 
     %% computer g 
     function res = g(x) 
-        if strcmp(opts.regul, 'l1')
-            res = opts.lambda*norm1(x);
-        end 
+        switch opts.regul
+            case 'l1'
+                res = opts.lambda*norm1(x);
+            case 'l2' 
+                res = opts.lambda*norm2_cols(x);
+            case 'l12'
+                res = opts.lambda*norm12(x);
+        end
     end 
 
     %% computer Q 
@@ -78,10 +94,6 @@ function [X, iter, min_cost] = fista_backtracking(cal_f, grad, proj, Xinit, opts
                     + L/2*normF2(x - y) + g(x);
     end 
 
-%     Linv = 1/L;    
-%     lambdaLiv = opts.lambda*Linv;
-    % opts_shrinkage = opts;
-    % opts_shrinkage.lambda = lambdaLiv;
     x_old = Xinit;
     y_old = Xinit;
     t_old = 1;
@@ -90,27 +102,27 @@ function [X, iter, min_cost] = fista_backtracking(cal_f, grad, proj, Xinit, opts
     %% MAIN LOOP
     opts_proj = opts;
 %     opts_proj.lambda = lambdaLiv;
-    Lold = opts.L0;
+    L = opts.L0;
+    opts0 = opts;
     while  iter < opts.max_iter
         iter = iter + 1;
         % find i_k 
-        ik = 0; 
-        Lbar = Lold; 
+        Lbar = L; 
         while true 
-            opts0 = opts;
             opts0.lambda = opts.lambda/Lbar; 
-            zk = feval(proj, y_old - 1/Lbar*feval(grad, y_old), opts0);
-            F = calc_F(zk);
+            zk = projection(y_old - 1/Lbar*feval(grad, y_old), opts0);
+            F = feval(calc_F, zk);
             Q = calc_Q(zk, y_old, Lbar);
-            Lbar = Lbar*opts.eta; 
-            Lold = Lbar; 
+            
             if F <= Q 
                 break;
-            end             
+            end
+            Lbar = Lbar*opts.eta; 
+            L = Lbar; 
         end 
-        
-        opts_proj.lambda = opts.lambda/Lold;
-        x_new = feval(proj, y_old - 1/Lold*feval(grad, y_old), opts_proj);
+%         L = L/opts.eta;
+        opts_proj.lambda = opts.lambda/L;
+        x_new = projection(y_old - 1/L*feval(grad, y_old), opts_proj);
         t_new = 0.5*(1 + sqrt(1 + 4*t_old^2));
         y_new = x_new + (t_old - 1)/t_new * (x_new - x_old);
         %% check stop criteria
@@ -145,7 +157,5 @@ function [X, iter, min_cost] = fista_backtracking(cal_f, grad, proj, Xinit, opts
         end 
     end
     X = x_new;
-    if nargout == 3 
-        min_cost = feval(calc_F, X);
-    end 
+
 end 
