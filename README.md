@@ -1,4 +1,6 @@
 
+**Update 11/06/17: FISTA with backtracking is tested with lasso, lasso_weighted, and Elastic net**
+
 # A simple implementation of [FISTA](https://github.com/tiepvupsu/FISTA)
 **A MATLAB FISTA implementation based on the paper:**
 
@@ -16,9 +18,11 @@ If you find any issue, please let me know via [this](https://github.com/tiepvups
 
 - [General Optimization problem](#general-optimization-problem)
 - [Algorithms](#algorithms)
-    - [If `L\(f\)` is easy to calculate,](#if-lf-is-easy-to-calculate)
-    - [In case `L\(f\)` is hard to find,](#in-case-lf-is-hard-to-find)
+    - [If `L(f)` is easy to calculate,](#if-lf-is-easy-to-calculate)
+    - [In case `L(f)` is hard to find,](#in-case-lf-is-hard-to-find)
 - [Usage](#usage)
+    - [`fista_general.m`](#fistageneralm)
+    - [`fista_backtracking`](#fistabacktracking)
 - [Examples](#examples)
     - [Lasso \(and weighted\) problems](#lasso-and-weighted-problems)
     - [Elastic net problems](#elastic-net-problems)
@@ -55,7 +59,7 @@ For a new problem, our job is to implement two functions: `grad_f(x)` and `pL(y)
 
 <a name="in-case-lf-is-hard-to-find"></a>
 ### In case `L(f)` is hard to find,
-We can alternatively use the following algorithm: (in this version, I haven't implemented this):
+We can alternatively use the following algorithm: 
 
 ![FISTA with backtracking](https://raw.githubusercontent.com/tiepvupsu/FISTA/master/figs/FISTA_noL.png)
 where `QL(x, y)` is defined as:
@@ -63,6 +67,9 @@ where `QL(x, y)` is defined as:
 
 <a name="usage"></a>
 ## Usage
+<a name="fistageneralm"></a>
+### `fista_general.m`
+
 `[X, iter, min_cost] = fista_general(grad, proj, Xinit, L, opts, calc_F) `
 
 See [`fista_general.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_general.m).
@@ -91,6 +98,37 @@ where:
        iter     : number of run iterations
        min_cost : the achieved cost
 ```
+<a name="fistabacktracking"></a>
+### `fista_backtracking`
+
+`function X = fista_backtracking(calc_f, grad, Xinit, opts, calc_F)`
+
+See [`fista_backtracking.m`](https://github.com/tiepvupsu/FISTA/blob/master/fista_backtracking.m)
+where: 
+```matlab
+ INPUT:
+      calc_f  : a function calculating f(x) in F(x) = f(x) + g(x) 
+      grad   : a function calculating gradient of f(X) given X.
+      Xinit  : a matrix -- initial guess.
+      opts   : a struct
+          opts.lambda  : a regularization parameter, can be either a scalar or
+                          a weighted matrix.
+          opts.max_iter: maximum iterations of the algorithm. 
+                          Default 300.
+          opts.tol     : a tolerance, the algorithm will stop if difference 
+                          between two successive X is smaller than this value. 
+                          Default 1e-8.
+          opts.verbose : showing F(X) after each iteration or not. 
+                          Default false. 
+          opts.L0 : a positive scalar. 
+          opts.eta: (must be > 1). eta in the algorithm (page 194)
+
+      calc_F: optional, a function calculating value of F at X 
+              via feval(calc_F, X). 
+ OUTPUT:
+     X        : solution
+```
+
 
 <a name="examples"></a>
 ## Examples
@@ -146,12 +184,14 @@ function X = lasso_fista(Y, D, Xinit, opts)
     [X, ~, ~] = fista_general(@grad, @proj_l1, Xinit, L, opts, @calc_F);
 end 
 ```
-        
+
+(See [])
+
 ***Example:***
 
 **1. L1 minimization** (`lambda` is a scalar)
 
-See [`test_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso.m)
+See [`demo_lasso.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo_lasso.m)
 
 ```matlab
 function test_lasso()
@@ -195,54 +235,7 @@ cost_spams = 8.39552e+00
 
 **2. Weighted l1 minimization** (`lambda` is a vector or a matrix)
 
-See [`test_lasso_weighted.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_lasso_weighted.m)
-
-```matlab
-function test_lasso_weighted()
-    clc
-    d      = 30;    % data dimension
-    N      = 70;    % number of samples 
-    k      = 50;    % dictionary size 
-    lambda = 0.01;
-    Y      = normc(rand(d, N));
-    D      = normc(rand(d, k));
-    lambda = rand(k, N);
-    if size(lambda, 2) == 1
-        lambda = repmat(lambda, 1, N);
-    end
-    %% fista solution 
-    opts.pos = true;
-    opts.lambda = lambda;
-    opts.check_grad = 1;
-    X_fista = fista_lasso(Y, D, [], opts);
-    %% spams solution 
-    param.lambda     = 1; 
-    param.lambda2    = 0;
-    param.numThreads = 1; 
-    param.mode       = 2; 
-    param.pos = opts.pos;
-    W = opts.lambda;
-    % mex solution and optimal value 
-    X_spams      = mexLassoWeighted(Y, D, W, param);
-    %% compare costs 
-    % cost function 
-    function c = calc_F(X)      
-        c = 1/2*normF2(Y - D*X) + norm1(lambda.*X);
-    end
-    cost_spams = calc_F(X_spams);
-    cost_fista = calc_F(X_fista);
-    fprintf('cost_fista = %.5s\n', cost_fista);
-    fprintf('cost_spams = %.5s\n', cost_spams);
-    cost_fista - cost_spams
-end
-```
-
-will generate an output like this:
-
-```
-cost_fista = 1.23149e+01
-cost_spams = 1.23149e+01
-```
+See [`demo_lasso_weighted.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo_lasso_weighted.m)
 
 **3. Full test**
 
@@ -345,48 +338,7 @@ end
 
 ***Example:***
 
-See [`test_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo/test_enet.m)
-
-```matlab
-function test_enet()
-    clc
-    d      = 30;    % data dimension
-    N      = 70;    % number of samples 
-    k      = 50;    % dictionary size 
-    lambda = 0.01;
-    lambda2 = 0.001;
-    Y      = normc(rand(d, N));
-    D      = normc(rand(d, k));
-    %% cost function 
-    function c = calc_F(X)
-        c = 0.5*normF2(Y - D*X) + lambda2/2*normF2(X) + lambda*norm1(X);
-    end
-    %% fista solution 
-    opts.pos = true;
-    opts.lambda = lambda;
-    opts.lambda2 = lambda2;
-    opts.check_grad = 0;
-    X_fista = fista_enet(Y, D, [], opts);
-    %% spams solution 
-    param.lambda     = lambda;
-    param.lambda2    = lambda2;
-    param.numThreads = 1;
-    param.mode       = 2;
-    param.pos        = opts.pos;
-    X_spams      = mexLasso(Y, D, param); 
-    %% compare costs 
-    cost_spams = calc_F(X_spams);
-    cost_fista = calc_F(X_fista);
-    fprintf('cost_fista = %.5s\n', cost_fista);
-    fprintf('cost_spams = %.5s\n', cost_spams);    
-end
-```
-Run this function will generate output like this:
-
-```
-cost_fista = 6.10309e+00
-cost_spams = 6.10309e+00
-```
+See [`demo_enet.m`](https://github.com/tiepvupsu/FISTA/blob/master/demo_enet.m)
 
 <a name="row-sparsity-problems"></a>
 ### Row sparsity problems 

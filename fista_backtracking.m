@@ -1,18 +1,16 @@
-function X = fista_backtracking(cal_f, grad, Xinit, opts, calc_F)   
-% function [X, iter, min_cost] = fista_backtracking(func, grad, proj, Xinit, L, opts, calc_F)   
+function X = fista_backtracking(calc_f, grad, Xinit, opts, calc_F)   
+% function [X, iter, min_cost] = fista_backtracking(calc_f, grad, Xinit, opts, calc_F)   
 % * A Fast Iterative Shrinkage-Thresholding Algorithm for 
-% Linear Inverse Problems.
+% Linear Inverse Problems: FISTA (backtracking version)
 % * Solve the problem: X = arg min_X F(X) = f(X) + lambda*g(X) where:
 %   - X: variable, can be a matrix.
 %   - f(X): a smooth convex function with continuously differentiable 
 %       with Lipschitz continuous gradient `L(f)` (Lipschitz constant of 
 %       the gradient of `f`).
 %  INPUT:
-%       cal_f  : a function calculating f(x) in F(x) = f(x) + g(x) 
+%       calc_f  : a function calculating f(x) in F(x) = f(x) + g(x) 
 %       grad   : a function calculating gradient of f(X) given X.
-%       proj   : a function calculating pL(x) -- projection
 %       Xinit  : a matrix -- initial guess.
-%       L      : a scalar the Lipschitz constant of the gradient of f(X).
 %       opts   : a struct
 %           opts.lambda  : a regularization parameter, can be either a scalar or
 %                           a weighted matrix.
@@ -30,15 +28,12 @@ function X = fista_backtracking(cal_f, grad, Xinit, opts, calc_F)
 %               via feval(calc_F, X). 
 %  OUTPUT:
 %      X        : solution
-%      iter     : number of run iterations
-%      min_cost : the achieved cost
-% Modifications:
-% 06/17/2016: set default value for opts.pos = false
-% -------------------------------------
-% Author: Tiep Vu, thv102, 4/6/2016
-% (http://www.personal.psu.edu/thv102/)
-% -------------------------------------
-%     opts = initOpts(opts);
+% ************************************************************************
+% * Date created    : 11/06/17
+% * Author          : Tiep Vu 
+% * Date modified   : 
+% ************************************************************************
+
     if ~isfield(opts, 'max_iter')
         opts.max_iter = 500;
     end
@@ -90,7 +85,7 @@ function X = fista_backtracking(cal_f, grad, Xinit, opts, calc_F)
     %% computer Q 
     function res = calc_Q(x, y, L) 
         % based on equation 2.5, page 189
-        res = feval(cal_f, y) + (x - y)'*feval(grad, y) ...
+        res = feval(calc_f, y) + (x - y)'*feval(grad, y) ...
                     + L/2*normF2(x - y) + g(x);
     end 
 
