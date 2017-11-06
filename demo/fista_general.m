@@ -1,10 +1,8 @@
-function demo_lasso()
+function test_lasso()
 	% clc
-%     rng(10);
-    addpath('utils/');
-    addpath('spams/build');    
+    addpath('../utils/')
 	d      = 300; 	% data dimension
-	N      = 100; 	% number of samples 
+	N      = 70; 	% number of samples 
 	k      = 100; 	% dictionary size 
 	lambda = 0.01;
 	Y      = normc(rand(d, N));
@@ -17,12 +15,6 @@ function demo_lasso()
 	opts.pos = true;
 	opts.lambda = lambda;
 	X_fista = fista_lasso(Y, D, [], opts);
-    %% fista with backtracking 
-    opts.pos = true; 
-    opts.lambda = lambda; 
-    opts.L0 = 1; 
-    opts.eta = 1.01;
-    X_fista_bt = fista_lasso_backtracking(Y, D, [], opts);
 	%% spams solution 
 	param.lambda     = lambda;
 	param.lambda2    = 0;
@@ -30,14 +22,9 @@ function demo_lasso()
 	param.mode       = 2;
 	param.pos        = opts.pos;
 	X_spams      = mexLasso(Y, D, param); 
-
 	%% compare costs 
 	cost_spams = calc_F(X_spams);
 	cost_fista = calc_F(X_fista);
-    cost_fista_bt = calc_F(X_fista_bt);
-    fprintf('cost_spams    = %.5s\n', cost_spams);
-	fprintf('cost_fista    = %.5s\n', cost_fista);
-    fprintf('cost_fista_bt = %.5s\n', cost_fista_bt);
-	
-%     [full(X_spams) X_fista X_fista_bt]
+	fprintf('cost_fista = %.5s\n', cost_fista);
+	fprintf('cost_spams = %.5s\n', cost_spams);
 end
