@@ -1,10 +1,4 @@
 function X = fista_enet(Y, D, Xinit, opts)
-
-
-    if ~isfield(opts, 'backtracking')
-        opts.backtracking = false;
-    end 
-
     opts    = initOpts(opts);
     lambda  = opts.lambda;
     lambda2 = opts.lambda2;
@@ -38,11 +32,7 @@ function X = fista_enet(Y, D, Xinit, opts)
         check_grad(@calc_f, @grad, Xinit);
     end 
     opts.max_iter = 500;    
-    if ~opts.backtracking 
-        %% Lipschitz constant 
-        L = max(eig(DtD));
-        [X, ~, ~] = fista_general(@grad, @proj_l1, Xinit, L, opts, @calc_F);
-    else 
-        [X, ~, ~] = fista_backtracking(@calc_f, @grad, @proj_l1, Xinit, opts,  @calc_F);
-    end 
+    %% Lipschitz constant 
+    L = max(eig(DtD));
+    [X, ~, ~] = fista_general(@grad, @proj_l1, Xinit, L, opts, @calc_F);
 end 

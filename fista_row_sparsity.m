@@ -30,11 +30,13 @@ function X = fista_row_sparsity(Y, D, Xinit, opts)
     L = max(eig(DtD));
     %% Use fista 
     opts.max_iter = 500;
-    [X, ~, ~] = fista_general(@grad, @proj_l12, Xinit, L, opts, @calc_F);    
+    [X, ~, ~] = fista_general(@grad, @proj_l12, Xinit, L, opts, @calc_F);
+    
     % we can also replace @proj_l12 by a function provided by SPAMS:
     % mexProximalFlat(U, opts)
     %%
     % opts.lambda = opts.lambda
     % opts.regul = 'l1l2'
     %[X, ~, ~] = fista_general(@grad, @proj_l12, Xinit, L, opts, @calc_F);    
+    
 end 

@@ -3,13 +3,13 @@ function X = fista_lasso_backtracking(Y, D, Xinit, opts)
     if ~isfield(opts, 'backtracking')
         opts.backtracking = false;
     end 
-
+    opts.regul = 'l1';
     opts = initOpts(opts);
     lambda = opts.lambda;
 
-    if numel(lambda) > 1 && size(lambda, 2)  == 1
-        lambda = repmat(opts.lambda, 1, size(Y, 2));
-    end
+%     if numel(lambda) > 1 && size(lambda, 2)  == 1
+%         lambda = repmat(opts.lambda, 1, size(Y, 2));
+%     end
     if numel(Xinit) == 0
         Xinit = zeros(size(D,2), size(Y,2));
     end
@@ -21,8 +21,12 @@ function X = fista_lasso_backtracking(Y, D, Xinit, opts)
     function cost = calc_F(X)
         if numel(lambda) == 1 % scalar 
             cost = calc_f(X) + lambda*norm1(X);
+         
         elseif numel(lambda) == numel(X)
             cost = calc_f(X) + norm1(lambda.*X);
+        elseif numel(lambda) == size(X, 1) 
+            lambda1 = repmat(lambda, 1, size(size(X, 2)));
+            cost = calc_f(X) + norm1(lambda1.*X);
         end
     end 
     %% gradient

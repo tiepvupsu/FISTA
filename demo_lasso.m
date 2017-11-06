@@ -35,10 +35,9 @@ function demo_lasso()
 	cost_spams = calc_F(X_spams);
 	cost_fista = calc_F(X_fista);
     cost_fista_bt = calc_F(X_fista_bt);
-    fprintf('cost_spams    = %.5s\n', cost_spams);
-	fprintf('cost_fista    = %.5s\n', cost_fista);
-    fprintf('cost_fista_bt = %.5s\n', cost_fista_bt);
+    fprintf('Test lasso\n');
+    fprintf('cost_spams                   = %.5s\n', cost_spams);
+	fprintf('cost_fista                   = %.5s\n', cost_fista);
+    fprintf('cost_fista with backtracking = %.5s\n', cost_fista_bt);
     
-%     [full(X_spams), X_fista, X_fista_bt]  
-%     [full(X_spams) X_fista X_fista_bt]
 end

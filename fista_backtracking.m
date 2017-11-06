@@ -72,14 +72,14 @@ function X = fista_backtracking(cal_f, grad, Xinit, opts, calc_F)
             case 'l2' 
                 res = proj_l2(U, opts);
             case 'l12'
-                res = proj_l12(U, opts);
+                res = proj_l2(U', opts)';
         end
     end 
     %% computer g 
     function res = g(x) 
         switch opts.regul
             case 'l1'
-                res = opts.lambda*norm1(x);
+                res = sum(sum(abs(opts.lambda.*x)));
             case 'l2' 
                 res = opts.lambda*norm2_cols(x);
             case 'l12'

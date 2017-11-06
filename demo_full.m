@@ -38,7 +38,6 @@ function X = demo_full()
     param.pos = true;
     opts.pos = param.pos;        
     X_fista = fista_lasso(Y, D, [], opts);
-    % [X, iter, ~] = fista(@grad, @proj_l1, Xinit, L, opts, @calc_F);
     X_spams      = mexLasso(Y, D, param); 
     fprintf('1. average(norm1(X_fista - X_spams)) = %5f\n', ...
         norm1(X_fista - X_spams)/numel(X_spams));
@@ -56,6 +55,7 @@ function X = demo_full()
     opts.lambda = lambda;
     opts.pos = false;
     X_fista = fista_lasso(Y, D, [], opts);
+    
     param.lambda     = 1; 
     param.lambda2    = 0;
     param.numThreads = 1; 

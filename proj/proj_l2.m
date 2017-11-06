@@ -23,7 +23,7 @@ function X = proj_l2(U, opts)
 		X = U;
 	else 
 		% norm2_cols = sqrt(sum(U.^2, 1));
-        tmp = norm2_cols(X);
+        tmp = norm2_cols(U);
 		k = max(1 - lambda./tmp, 0);
 		if opts.pos 
 			X = repmat(k, size(U, 1), 1).*max(0, U);
