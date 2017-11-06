@@ -11,7 +11,9 @@ vol. 2, no. 1, pp. 183–202, 2009. [View the paper](http://people.rennes.inria.
 
 If you find any issue, please let me know via [this](https://github.com/tiepvupsu/FISTA/issues). I would really appreciate. Thank you.
 
-***Note:*** Results in this repo are compared with those obtained by the [*SPAMS*](http://spams-devel.gforge.inria.fr/) toolbox. 
+***Note:*** Results in this repo are compared with those obtained by the [*SPAMS*](http://spams-devel.gforge.inria.fr/) toolbox. You need to install spams and put the generated 'build' folder under the 'spams' folder of this repo. 
+
+
 # Table of content
 
 <!-- MarkdownTOC -->
