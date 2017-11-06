@@ -1,5 +1,5 @@
 
-**Update 11/06/17: FISTA with backtracking is tested with lasso, lasso_weighted, and Elastic net**
+# Update 11/06/17: FISTA with backtracking is tested with lasso, lasso_weighted, and Elastic net.
 
 # A simple implementation of [FISTA](https://github.com/tiepvupsu/FISTA)
 **A MATLAB FISTA implementation based on the paper:**
