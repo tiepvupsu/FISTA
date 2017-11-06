@@ -1,4 +1,4 @@
-function test_lasso()
+function demo_lasso()
 	% clc
     addpath('utils/');
     addpath('spams/build');    

@@ -1,4 +1,4 @@
-function test_enet()
+function demo_enet()
 	clc
 	d      = 30; 	% data dimension
 	N      = 70; 	% number of samples 

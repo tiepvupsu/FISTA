@@ -1,6 +1,5 @@
-function X = fulltest_fista_lasso()
-    clc;        
-    addpath(fullfile('build'));
+function X = demo_full()    
+    addpath('spams/build');
     addpath('proj');
     addpath('utils');
     d      = 300; % data dimension
@@ -22,6 +21,7 @@ function X = fulltest_fista_lasso()
             cost = 1/2 *normF2(Y - D*X) + norm1(lambda.*X);
         end
     end 
+    fprintf('********************Full demo**********************\n');
     fprintf('A toy example:\n')
     fprintf('Data dimension                : %d\n', size(Y, 1));
     fprintf('No. of samples                : %d\n', size(Y, 2));
