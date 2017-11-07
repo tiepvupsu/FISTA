@@ -23,7 +23,7 @@ function X = fista_backtracking(calc_f, grad, Xinit, opts, calc_F)
 %                           Default false. 
 %           opts.L0 : a positive scalar. 
 %           opts.eta: (must be > 1). eta in the algorithm (page 194)
-%
+
 %       calc_F: optional, a function calculating value of F at X 
 %               via feval(calc_F, X). 
 %  OUTPUT:
